@@ -1,0 +1,35 @@
+.inputfield{
+    width: 80%;
+    margin-top: 7px;
+
+}
+.cardheading{
+   color: #0C4084;
+   margin-top: 10px;
+}
+.btn-submit{
+    background-color: #0C4084;
+    width: 70%;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    color: white;
+   
+}
+.already-login{
+    text-decoration: none;
+    font-size: 13px;
+    margin-left: 20px;
+    
+}
+
+.sumbit-btn{
+    text-decoration: none;
+
+}
+.logo1{
+    width:fit-content
+}
+.danger{
+    color: red;
+    font-size: 80%;
+}
