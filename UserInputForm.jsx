@@ -82,12 +82,8 @@ function RegisterComponent() {
   alert("Registered Successfully")
   navigate('/table')
 }
-     ).catch(
-        );
-      } catch (error) {
-       
+     )} catch (error) { 
       }
-     
     }}
     
   return ( <ThemeProvider theme={defaultTheme}>
