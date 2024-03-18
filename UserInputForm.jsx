@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { Link} from 'react-router-dom'
+import { Link, useNavigate} from 'react-router-dom'
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -28,21 +28,22 @@ function Copyright(props) {
       {'.'}
     </Typography>
   );
-}
+  }
 const defaultTheme = createTheme();
 function RegisterComponent() {
   const regData = {
-    Name: '',
-    Email: '',
-    Age: '',
-    DOB: '',
+    name: '',
+    email: '',
+    age: '',
+    dob: '',
   }
+  const navigate=useNavigate()
   const [formData, setFormData] = useState(regData)
   const handleData = async(e) => {  
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
   const handleDatadate =dateValue =>{
-    setFormData({ ...formData, ["DOB"]: dateValue })
+    setFormData({ ...formData, ["dob"]: dateValue })
 }
   const [errors, setErrors] = useState({})
   const [valid, setValid] = useState(true)
@@ -50,37 +51,43 @@ function RegisterComponent() {
     e.preventDefault();
     let isValid = true;
     let validationErrors = {}
-    if (formData.Name === "" || formData.Name === null) {
+    if (formData.name === "" || formData.name === null) {
       isValid = false;
-      validationErrors.Name = 'Name Required'
+      validationErrors.name = 'Name Required'
     }
-    if (formData.DOB === '' || formData.DOB === null) {
+    if (formData.dob === '' || formData.dob === null) {
       isValid = false;
       validationErrors.DOB = 'Date of Birth Required'
     }
-    if (formData.Email === '' || formData.Email === null) {
+    if (formData.email === '' || formData.email === null) {
       isValid = false;
-      validationErrors.Email = 'Email  Required'
-    }else if (!/\S+@\S+\.\S+/.test(formData.Email)) {
+      validationErrors.email = 'Email  Required'
+    }else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       isValid = false;
-      validationErrors.Email = 'Email is not Valid'
+      validationErrors.email = 'Email is not Valid'
     }
-    if (formData.Age === '' || formData.Age === null) {
+    if (formData.age === '' || formData.age === null) {
       isValid = false;
-      validationErrors.Age = 'User Age  Required'
+      validationErrors.age = 'User Age  Required'
     }
     setErrors(validationErrors)
     setValid(isValid)
     if (Object.keys(validationErrors).length === 0) {
       try {
-       axios.post("http://localhost:1234/gkb/insert",(formData), {
-          headers: {'Content-Type': 'application/json'},
-        });
-        alert("Register Successfully") 
+       axios.post("http://localhost:1234/gkb/insert",formData, {
+          headers: {'Content-Type': 'application/json'}
+        }).then(
+(result)=>{
+  setFormData(result.data)
+  alert("Registered Successfully")
+  navigate('/table')
+}
+     ).catch(
+        );
       } catch (error) {
-        console.error(error);
+       
       }
-      debugger
+     
     }}
     
   return ( <ThemeProvider theme={defaultTheme}>
@@ -98,7 +105,7 @@ function RegisterComponent() {
         <img  src={logo} alt=''/>
         </Avatar>
         <Typography component="h1" variant="h5">User Input Form</Typography>
-        <Box component="form" noValidate sx={{ mt: 3 }}>
+        <Box component="form" noValidate sx={{ mt: 3 }} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12}>
               <TextField
@@ -106,8 +113,8 @@ function RegisterComponent() {
               className="form-control"
               aria-label="Sizing example input"
               aria-describedby="inputGroup-sizing-default"
-              name='Name'
-              value={formData.Name}
+              name='name'
+              value={formData.name}
               onChange={handleData}
                 autoComplete="given-name"
                 required
@@ -116,7 +123,7 @@ function RegisterComponent() {
                 label="Name"
                 autoFocus
               />
-              <div className='danger'><label>{errors.Name}</label></div>
+              <div className='danger'><label>{errors.name}</label></div>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -124,8 +131,8 @@ function RegisterComponent() {
                className="form-control"
                aria-label="Mail_ID"
                aria-describedby="addon-wrapping"
-               name='Email'
-               value={formData.Email}
+               name='email'
+               value={formData.email}
                onChange={handleData}
                 required
                 fullWidth
@@ -133,22 +140,24 @@ function RegisterComponent() {
                 label="Email Address"
                 autoComplete="email"
               />
-              <div className='danger'><label>{errors.Email}</label></div>
+              <div className='danger'><label>{errors.email}</label></div>
             </Grid>
             <Grid item xs={12} sm={6}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}
-              value={formData.DOB}>
-                 <DatePicker
-                 className="form-control" 
-                   required
-                   fullWidth
-                   id="DOB"
-                   label="DOB"
-                   autoComplete="DOB"
-          onChange={(newValue) => handleDatadate(newValue)}
-        />
-        </LocalizationProvider>
-    <div className='danger'><label>{errors.DOB}</label></div>
+            <TextField
+                required
+              fullWidth
+              type="date"
+                className="form-control"
+                aria-label="DOB"
+                aria-describedby="addon-wrapping"
+                name='dob'
+                value={formData.dob}
+                onChange={handleData}
+                id="DOB"
+                label="___________DOB"
+                autoComplete="DOB"
+              />
+    <div className='danger'><label>{errors.dob}</label></div>
     </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -158,14 +167,14 @@ function RegisterComponent() {
                 className="form-control"
                 aria-label="Age"
                 aria-describedby="addon-wrapping"
-                name='Age'
-                value={formData.Age}
+                name='age'
+                value={formData.age}
                 onChange={handleData}
                 id="Age"
                 label="Age"
                 autoComplete="Age"
               />
-              <div className='danger'><label>{errors.Age}</label></div>
+              <div className='danger'><label>{errors.age}</label></div>
             </Grid>
            
             <Grid item xs={12}>
