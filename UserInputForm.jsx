@@ -57,7 +57,7 @@ function RegisterComponent() {
     }
     if (formData.dob === '' || formData.dob === null) {
       isValid = false;
-      validationErrors.DOB = 'Date of Birth Required'
+      validationErrors.dob = 'Date of Birth Required'
     }
     if (formData.email === '' || formData.email === null) {
       isValid = false;
